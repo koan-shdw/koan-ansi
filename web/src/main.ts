@@ -519,4 +519,28 @@ window.addEventListener('keydown', (e) => {
 window.addEventListener('resize', () => {
   if (tourAt >= 0) showTour(tourAt)
 })
-if (!tourDone()) window.setTimeout(() => showTour(0), 600)
+
+// ?demo — load a synthetic scene immediately (shareable instant demo; no tour)
+const DEMO = new URLSearchParams(location.search).has('demo')
+if (!tourDone() && !DEMO) window.setTimeout(() => showTour(0), 600)
+if (DEMO) {
+  const cv = document.createElement('canvas')
+  cv.width = 480
+  cv.height = 240
+  const x = cv.getContext('2d')!
+  const gr = x.createLinearGradient(0, 0, 0, 240)
+  gr.addColorStop(0, '#2a0845')
+  gr.addColorStop(0.6, '#ff8c42')
+  gr.addColorStop(1, '#0b3d2e')
+  x.fillStyle = gr
+  x.fillRect(0, 0, 480, 240)
+  x.fillStyle = '#ffe28a'
+  x.beginPath()
+  x.arc(240, 150, 70, 0, 7)
+  x.fill()
+  x.fillStyle = '#08131a'
+  x.fillRect(0, 190, 480, 50)
+  cv.toBlob((b) => {
+    if (b) void loadFile(new File([b], 'demo-sunset.png', { type: 'image/png' }))
+  })
+}
