@@ -1,0 +1,250 @@
+/* KOAN.design contract (bible ch. 01) — stylesheet baseline = DECK.
+   Geometry: radius 4 controls / 6 containers / 8 top layer · borders 1px rest,
+   2px emphasis · spacing 2/4/6/8/12/16 · mono chrome. */
+
+:root {
+  --bg0: #050807;
+  --bg: #070a08;
+  --bg2: #0c120e;
+  --panel: #101713;
+  --panel2: #16201a;
+  --field: #08100b;
+  --header: #020403;
+  --line: #1e3327;
+  --line2: #2c4a38;
+  --txt-hi: #e6ffe9;
+  --txt: #d8f5dd;
+  --body: #b8dfc2;
+  --muted: #7aa989;
+  --dim: #4e7360;
+  --accent: #00ff9f;
+  --accent-dim: #0a7a52;
+  --accent-soft: #7dffc7;
+  --on-accent: #001a10;
+  --ok: #52e07a;
+  --warn: #ffcf57;
+  --bad: #ff5f56;
+  --focus: #00ff9f;
+  --mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  --sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+/* class display rules must not defeat the hidden attribute */
+[hidden] { display: none !important; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--txt);
+  font: 13px/1.45 var(--mono);
+}
+
+#app { display: flex; flex-direction: column; height: 100%; }
+
+/* ---------- header ---------- */
+header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: var(--header);
+  border-bottom: 1px solid var(--line);
+}
+header .logo { font-size: 20px; letter-spacing: 2px; color: var(--txt-hi); }
+header .logo b { color: var(--accent); font-weight: 700; }
+header .tag { font-size: 11px; color: var(--muted); }
+header .spacer { flex: 1; }
+
+/* ---------- layout ---------- */
+main {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 12px;
+  padding: 12px;
+  flex: 1;
+  min-height: 0;
+}
+@media (max-width: 760px) {
+  main { grid-template-columns: 1fr; overflow: auto; }
+}
+
+/* ---------- controls card ---------- */
+.controls {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.group { display: flex; flex-direction: column; gap: 6px; }
+.legend {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.row { display: flex; align-items: center; gap: 6px; }
+.row label { font-size: 12px; color: var(--body); flex: 1; }
+.row .val { font-size: 11px; color: var(--muted); min-width: 34px; text-align: right; }
+
+/* ---------- inputs ---------- */
+select, input[type='number'] {
+  background: var(--field);
+  color: var(--txt-hi);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font: 12px var(--mono);
+  padding: 4px 6px;
+  min-height: 24px;
+}
+select:hover, input[type='number']:hover { border-color: var(--line2); }
+select:focus, input:focus { outline: none; border-color: var(--focus); }
+input[type='range'] { accent-color: var(--accent); flex: 2; min-height: 24px; }
+input[type='checkbox'] { accent-color: var(--accent); width: 14px; height: 14px; }
+
+button {
+  background: var(--panel2);
+  color: var(--txt);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font: 12px var(--mono);
+  padding: 4px 10px;
+  min-height: 24px;
+  cursor: pointer;
+}
+button:hover { border-color: var(--line2); color: var(--txt-hi); }
+button.primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 2px solid var(--accent);
+  font-weight: 700;
+}
+button.primary:hover { background: var(--accent-soft); border-color: var(--accent-soft); }
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  color: var(--dim);
+}
+
+/* ---------- drop zone ---------- */
+.drop {
+  border: 1px dashed var(--line2);
+  border-radius: 6px;
+  padding: 16px 8px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color 0.1s, color 0.1s;
+}
+.drop.armed { border: 2px solid var(--accent); color: var(--accent); padding: 15px 7px; }
+.drop .name { color: var(--txt-hi); font-size: 12px; word-break: break-all; }
+.drop .meta { color: var(--dim); font-size: 11px; }
+
+/* ---------- preview well ---------- */
+.well {
+  background: var(--bg0);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  min-height: 0;
+  min-width: 0; /* keep canvas overflow inside .canvases — never widen the grid track */
+  display: flex;
+  flex-direction: column;
+}
+.canvases {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  align-items: flex-start;
+}
+/* auto margins center when there's room but collapse to 0 on overflow, so a
+   zoomed canvas stays reachable by scroll (justify-content:center clips it) */
+.slot { display: flex; flex-direction: column; gap: 4px; min-width: 0; margin: 0 auto; }
+.slot .cap {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.slot.selected .cap { color: var(--accent); }
+.slot canvas {
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  max-width: 100%;
+  height: auto;
+  cursor: pointer;
+}
+.slot.selected canvas { border: 2px solid var(--accent); }
+.zoomed .slot canvas { max-width: none; image-rendering: pixelated; }
+
+.empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--dim);
+  font-size: 12px;
+  text-align: center;
+  padding: 16px;
+}
+
+.status {
+  border-top: 1px solid var(--line);
+  padding: 4px 10px;
+  font-size: 11px;
+  color: var(--muted);
+  display: flex;
+  gap: 12px;
+}
+.status .msg { color: var(--accent-soft); }
+.status .err { color: var(--bad); }
+.status .spacer { flex: 1; }
+
+/* ---------- intro tour ---------- */
+header .ghost { min-width: 24px; padding: 4px 8px; }
+.tour-mark {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.tour-bubble {
+  position: fixed;
+  z-index: 900; /* tour layer: above content + menus, below toasts */
+  background: var(--panel2);
+  border: 1px solid var(--line2);
+  border-radius: 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tour-text { font-size: 12px; color: var(--body); }
+.tour-row { display: flex; align-items: center; gap: 6px; }
+.tour-step {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+}
+.tour-spacer { flex: 1; }
+.tour-skip { color: var(--muted); }
+
+/* ---------- the KOAN scrollbar ---------- */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--dim);
+  border: 3px solid transparent;
+  border-radius: 6px;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background-color: var(--muted); background-clip: padding-box; }
+::-webkit-scrollbar-thumb:active { background-color: var(--accent-dim); background-clip: padding-box; }

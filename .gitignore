@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+build/
+dist/
+*.egg-info/
+out/
+.venv/
+node_modules/
+web/dist/
+web/dist-artifact/

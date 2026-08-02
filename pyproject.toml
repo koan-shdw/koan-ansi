@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "koan-ansi"
+version = "1.0.0"
+description = "KOAN.ansi — image/video to authentic BBS-scene ANSI art: CP437 blocks, DOS 16-color palette, half-block trick. Exports .ans, Ansimation (.ansim), PNG previews, and web-ready JSON grids."
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Alexander Mitchell (KOAN)" }]
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.26", "pillow>=10"]
+
+[project.scripts]
+koan-ansi = "koan_ansi.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["koan_ansi*"]
