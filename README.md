@@ -4,6 +4,9 @@
 16-color palette (iCE colors), and the half-block trick that doubles vertical
 resolution — the real thing, not monochrome ASCII.
 
+**▶ Use it in your browser — nothing to install:
+<https://koan-shdw.github.io/koan-ansi/>**
+
 Born from the old scene spirit: tools get released. ACiD lineage as the
 quality bar.
 
@@ -68,10 +71,10 @@ Useful knobs: `--cols` (grid width; height follows the 1:2 cell aspect),
 
 ## Web tool
 
-A zero-backend browser version lives in [`web/`](web/) — drop / paste an
+Live at **<https://koan-shdw.github.io/koan-ansi/>** — drop / paste an
 image, tune everything live, download all formats. Conversion runs entirely
 client-side (a TypeScript port of the same matcher, verified to 99.8% cell
-parity with the Python core).
+parity with the Python core). Source in [`web/`](web/):
 
 ```bash
 cd web && npm install && npm run dev
